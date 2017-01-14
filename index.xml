@@ -11,10 +11,10 @@
     
     <item>
       <title>Cachebusting technique for asp.net core</title>
-      <link>https://ghstahl.github.io/post/good-to-great/</link>
+      <link>https://ghstahl.github.io/post/cachebusting-technique-for-aspnet-core/</link>
       <pubDate>Sat, 14 Jan 2017 14:09:44 -0800</pubDate>
       
-      <guid>https://ghstahl.github.io/post/good-to-great/</guid>
+      <guid>https://ghstahl.github.io/post/cachebusting-technique-for-aspnet-core/</guid>
       <description>Goal The goal of this exercise is to create a versioned route, as opposed to adding a query paramater to the end of the route. It isn&amp;rsquo;t simple browser cache busting we are after, but in later posts this technique will be used to feed a CDN.
 The stock asp.net core script tag helper looks like this;
 &amp;lt;script src=&amp;quot;~/lib/jquery/dist/jquery.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;  Our asp.net core script tag helper will look like this;</description>
