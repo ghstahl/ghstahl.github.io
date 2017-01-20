@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Software Architecture And Development from the Trenches</title>
-    <link>https://ghstahl.github.io/post/index.xml</link>
-    <description>Recent content in Posts on Software Architecture And Development from the Trenches</description>
+    <title>Asp.Net Core on Software Architecture And Development from the Trenches</title>
+    <link>https://ghstahl.github.io/categories/asp.net-core/index.xml</link>
+    <description>Recent content in Asp.Net Core on Software Architecture And Development from the Trenches</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 20 Jan 2017 08:35:55 -0800</lastBuildDate>
-    <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/asp.net-core/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Simple Redirector for Asp.Net Core</title>
