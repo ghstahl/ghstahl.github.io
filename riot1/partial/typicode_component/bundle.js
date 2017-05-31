@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -83,19 +83,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+__webpack_require__(6);
+
+__webpack_require__(7);
+
+__webpack_require__(5);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var RouteContributionStore = function () {
-  function RouteContributionStore() {
-    _classCallCheck(this, RouteContributionStore);
+var RouteContributer = function () {
+  function RouteContributer() {
+    _classCallCheck(this, RouteContributer);
 
     var self = this;
 
-    self.name = 'RouteContributionStore';
+    riot.observable(self);
+    self.name = 'RouteContributer';
     self._initializeViewSet();
+
+    this.initialize();
   }
 
-  RouteContributionStore.prototype._initializeViewSet = function _initializeViewSet() {
+  RouteContributer.prototype._initializeViewSet = function _initializeViewSet() {
     var self = this;
 
     self._viewsSet = new Set();
@@ -108,40 +117,39 @@ var RouteContributionStore = function () {
     self.defaultRoute = '/my-component-page/home';
   };
 
-  RouteContributionStore.prototype.uninitialize = function uninitialize() {};
+  RouteContributer.prototype.uninitialize = function uninitialize() {};
 
-  RouteContributionStore.prototype.initialize = function initialize() {
+  RouteContributer.prototype.initialize = function initialize() {};
+
+  RouteContributer.prototype.contributeRoutes = function contributeRoutes(r) {
     var self = this;
 
-    riot.observable(self);
-    self.on(riot.EVT.router.out.contributeRoutes, function (r) {
-      console.log(self.name, riot.EVT.router.out.contributeRoutes, r);
-      r('/my-component-page/typicode-user-detail?id=*', function () {
-        console.log('route handler of /my-component-page/typicode-user-detail');
-        riot.control.trigger(riot.EVT.routeStore.in.riotRouteLoadView, 'mpc-typicode-user-detail');
-      });
+    console.log(self.name, riot.EVT.router.out.contributeRoutes, r);
+    r('/my-component-page/typicode-user-detail?id=*', function () {
+      console.log('route handler of /my-component-page/typicode-user-detail');
+      riot.control.trigger(riot.EVT.routeStore.in.riotRouteLoadView, 'mpc-typicode-user-detail');
+    });
 
-      r('/my-component-page/*', function (name) {
-        console.log('route handler of /my-component-page/' + name);
-        var view = name;
+    r('/my-component-page/*', function (name) {
+      console.log('route handler of /my-component-page/' + name);
+      var view = name;
 
-        if (self.views.indexOf(view) === -1) {
-          riot.control.trigger(riot.EVT.routeStore.in.routeDispatch, self.defaultRoute);
-        } else {
-          riot.control.trigger(riot.EVT.routeStore.in.riotRouteLoadView, 'mpc-' + view);
-        }
-      });
-      r('/my-component-page..', function () {
-        console.log('route handler of /my-component-page..');
+      if (self.views.indexOf(view) === -1) {
         riot.control.trigger(riot.EVT.routeStore.in.routeDispatch, self.defaultRoute);
-      });
+      } else {
+        riot.control.trigger(riot.EVT.routeStore.in.riotRouteLoadView, 'mpc-' + view);
+      }
+    });
+    r('/my-component-page..', function () {
+      console.log('route handler of /my-component-page..');
+      riot.control.trigger(riot.EVT.routeStore.in.routeDispatch, self.defaultRoute);
     });
   };
 
-  return RouteContributionStore;
+  return RouteContributer;
 }();
 
-exports.default = RouteContributionStore;
+exports.default = RouteContributer;
 
 /***/ }),
 /* 2 */
@@ -179,20 +187,22 @@ var TypicodeUserStore = function () {
     };
 
     this.fetchException = null;
+    this.bound = false;
+    this.bind();
   }
 
   TypicodeUserStore.prototype._onTypicodeUsersFetch = function _onTypicodeUsersFetch(query) {
     console.log(riot.EVT.typicodeUserStore.in.typicodeUsersFetch);
     var url = 'https://jsonplaceholder.typicode.com/users';
-    var trigger = {
-      name: riot.EVT.typicodeUserStore.in.typicodeUsersFetchResult
+    var myAck = {
+      evt: riot.EVT.typicodeUserStore.in.typicodeUsersFetchResult
     };
 
     if (query) {
-      trigger.query = query;
+      myAck.query = query;
     }
 
-    riot.control.trigger(riot.EVT.fetchStore.in.fetch, url, null, trigger);
+    riot.control.trigger(riot.EVT.fetchStore.in.fetch, url, null, myAck);
   };
 
   TypicodeUserStore.prototype._onTypicodeUserFetch = function _onTypicodeUserFetch(query) {
@@ -223,18 +233,24 @@ var TypicodeUserStore = function () {
     }
   };
 
-  TypicodeUserStore.prototype.uninitialize = function uninitialize() {
-    this.off(riot.EVT.typicodeUserStore.in.typicodeUsersFetch, this._onTypicodeUsersFetch);
-    this.off(riot.EVT.typicodeUserStore.in.typicodeUserFetch, this._onTypicodeUserFetch);
-    this.off(riot.EVT.typicodeUserStore.in.typicodeUsersFetchResult, this._onUsersResult);
-    riot.EVT.typicodeUserStore = null;
+  TypicodeUserStore.prototype.unbind = function unbind() {
+    if (this.bound === true) {
+      this.off(riot.EVT.typicodeUserStore.in.typicodeUsersFetch, this._onTypicodeUsersFetch);
+      this.off(riot.EVT.typicodeUserStore.in.typicodeUserFetch, this._onTypicodeUserFetch);
+      this.off(riot.EVT.typicodeUserStore.in.typicodeUsersFetchResult, this._onUsersResult);
+
+      this.bound = !this.bound;
+    }
   };
 
-  TypicodeUserStore.prototype.initialize = function initialize() {
+  TypicodeUserStore.prototype.bind = function bind() {
+    if (this.bound === false) {
+      this.on(riot.EVT.typicodeUserStore.in.typicodeUsersFetchResult, this._onUsersResult);
+      this.on(riot.EVT.typicodeUserStore.in.typicodeUsersFetch, this._onTypicodeUsersFetch);
+      this.on(riot.EVT.typicodeUserStore.in.typicodeUserFetch, this._onTypicodeUserFetch);
 
-    this.on(riot.EVT.typicodeUserStore.in.typicodeUsersFetchResult, this._onUsersResult);
-    this.on(riot.EVT.typicodeUserStore.in.typicodeUsersFetch, this._onTypicodeUsersFetch);
-    this.on(riot.EVT.typicodeUserStore.in.typicodeUserFetch, this._onTypicodeUserFetch);
+      this.bound = !this.bound;
+    }
   };
 
   /**
@@ -246,16 +262,16 @@ var TypicodeUserStore = function () {
     this.fetchException = null;
   };
 
-  TypicodeUserStore.prototype._onUsersResult = function _onUsersResult(result, myTrigger) {
-    console.log(riot.EVT.typicodeUserStore.in.typicodeUsersFetchResult, result, myTrigger);
+  TypicodeUserStore.prototype._onUsersResult = function _onUsersResult(result, ack) {
+    console.log(riot.EVT.typicodeUserStore.in.typicodeUsersFetchResult, result, ack);
     if (result.error == null && result.response.ok && result.json) {
       // good
       var data = result.json;
 
       riot.control.trigger(riot.EVT.localStorageStore.in.localstorageSet, { key: userCache, data: data });
       this.trigger(riot.EVT.typicodeUserStore.out.typicodeUsersChanged, data);
-      if (myTrigger.query) {
-        var query = myTrigger.query;
+      if (ack.query) {
+        var query = ack.query;
 
         if (query.type === 'riotControlTrigger') {
           riot.control.trigger(query.evt, query.query);
@@ -275,6 +291,45 @@ exports.default = TypicodeUserStore;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(0);
+
+__webpack_require__(3);
+
+var _typicodeUserStore = __webpack_require__(2);
+
+var _typicodeUserStore2 = _interopRequireDefault(_typicodeUserStore);
+
+var _routeContributer = __webpack_require__(1);
+
+var _routeContributer2 = _interopRequireDefault(_routeContributer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var rcs = new _routeContributer2.default();
+var registerRecord = {
+  name: 'typicode-component',
+  stores: [{ store: new _typicodeUserStore2.default() }],
+  registrants: {
+    routeContributer: rcs
+  },
+  postLoadEvents: [{ event: 'typicode-init', data: {} }]
+};
+
+riot.control.trigger('plugin-registration', registerRecord);
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -284,7 +339,7 @@ var riot = __webpack_require__(0);
 riot.tag2('mpc-home', '<div class="panel panel-default"> <div class="panel-heading">My Component</div> <div class="panel-body"> <div class="well"> I am located in a prebuilt bundle.js. I am a full blown SPA as far as I am concerned, as I just had to follow a few rules that the hosting SPA required. </div> </div> </div> <a href="#my-component-page/my-component-page" class="btn btn-default">TypiCode Users</a>', '', '', function (opts) {});
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -322,7 +377,7 @@ riot.tag2('mpc-my-component-page', '<div class="panel panel-default"> <div class
 });
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -352,49 +407,6 @@ riot.tag2('mpc-typicode-user-detail', '<div if="{result != null}" class="panel p
         riot.control.off(riot.EVT.typicodeUserStore.out.typicodeUserChanged, self.onUserChanged);
     });
 });
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(0);
-
-__webpack_require__(6);
-
-var _typicodeUserStore = __webpack_require__(2);
-
-var _typicodeUserStore2 = _interopRequireDefault(_typicodeUserStore);
-
-var _routeContributionStore = __webpack_require__(1);
-
-var _routeContributionStore2 = _interopRequireDefault(_routeContributionStore);
-
-__webpack_require__(4);
-
-__webpack_require__(5);
-
-__webpack_require__(3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var registerRecord = {
-  name: 'typicode-component',
-  stores: [{ store: new _typicodeUserStore2.default() }, { store: new _routeContributionStore2.default() }],
-  postLoadEvents: [{ event: 'typicode-init', data: {} }],
-  preUnloadEvents: [{ event: 'typicode-uninit', data: {} }]
-};
-
-riot.control.trigger('plugin-registration', registerRecord);
-riot.control.trigger('component-load-complete', registerRecord.name);
 
 /***/ })
 /******/ ]);
