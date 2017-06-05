@@ -4240,7 +4240,8 @@ Constants.NAMESPACE = Constants.NAME + ':';
 Constants.WELLKNOWN_EVENTS = {
   in: {
     fetchConfig: Constants.NAMESPACE + 'fetch-config',
-    fetchConfigResult: Constants.NAMESPACE + 'fetch-config-result'
+    fetchConfigResult: Constants.NAMESPACE + 'fetch-config-result',
+    fetchConfigHeadResult: Constants.NAMESPACE + 'fetch-config-head-result'
   },
   out: {
     configComplete: Constants.NAMESPACE + 'config-complete'
@@ -4259,16 +4260,16 @@ var NextConfigStore = function () {
   function NextConfigStore() {
     _classCallCheck(this, NextConfigStore);
 
+    var self = this;
     riot.observable(this);
-    this._bound = false;
-    this.bindEvents();
+    self._bound = false;
+    self.bindEvents();
   }
 
   NextConfigStore.prototype.bindEvents = function bindEvents() {
     if (this._bound === false) {
       this.on(Constants.WELLKNOWN_EVENTS.in.fetchConfig, this._onFetchConfig);
       this.on(riot.EVT.nextConfigStore.in.fetchConfigResult, this._onFetchConfigResult);
-
       this._bound = !this._bound;
     }
   };
@@ -4277,7 +4278,6 @@ var NextConfigStore = function () {
     if (this._bound === true) {
       this.off(Constants.WELLKNOWN_EVENTS.in.fetchConfig, this._onFetchConfig);
       this.off(riot.EVT.nextConfigStore.in.fetchConfigResult, this._onFetchConfigResult);
-
       this._bound = !this._bound;
     }
   };
@@ -4473,7 +4473,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else if ((typeof exports === 'undefined' ? 'undefined' : _typeof2(exports)) === 'object') exports["P7HostCore"] = factory(require("riot"), require("riot-route"), require("riotcontrol"), require("whatwg-fetch"));else root["P7HostCore"] = factory(root["riot"], root["riot-route"], root["riotcontrol"], root["whatwg-fetch"]);
-})(undefined, function (__WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_19__, __WEBPACK_EXTERNAL_MODULE_20__, __WEBPACK_EXTERNAL_MODULE_22__) {
+})(undefined, function (__WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_21__, __WEBPACK_EXTERNAL_MODULE_22__, __WEBPACK_EXTERNAL_MODULE_24__) {
   return (/******/function (modules) {
       // webpackBootstrap
       /******/ // The module cache
@@ -4553,7 +4553,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
       /******/__webpack_require__.p = "";
       /******/
       /******/ // Load entry module and return exports
-      /******/return __webpack_require__(__webpack_require__.s = 21);
+      /******/return __webpack_require__(__webpack_require__.s = 23);
       /******/
     }(
     /************************************************************************/
@@ -4872,7 +4872,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       var _deepFreeze2 = _interopRequireDefault(_deepFreeze);
 
-      var _validators = __webpack_require__(14);
+      var _validators = __webpack_require__(15);
 
       var _validators2 = _interopRequireDefault(_validators);
 
@@ -5441,6 +5441,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
       /***/
     },
     /* 5 */
+    /***/function (module, exports) {
+
+      module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
+
+      /***/
+    },
+    /* 6 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -5596,7 +5603,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 6 */
+    /* 7 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -5678,7 +5685,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 7 */
+    /* 8 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -5779,7 +5786,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 8 */
+    /* 9 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -5804,7 +5811,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         };
       }();
 
-      __webpack_require__(22);
+      __webpack_require__(24);
 
       var _deepFreeze = __webpack_require__(0);
 
@@ -5952,7 +5959,179 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 9 */
+    /* 10 */
+    /***/function (module, exports, __webpack_require__) {
+
+      "use strict";
+
+      Object.defineProperty(exports, "__esModule", {
+        value: true
+      });
+
+      var _createClass = function () {
+        function defineProperties(target, props) {
+          for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+          }
+        }return function (Constructor, protoProps, staticProps) {
+          if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+        };
+      }();
+
+      var _deepFreeze = __webpack_require__(0);
+
+      var _deepFreeze2 = _interopRequireDefault(_deepFreeze);
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj };
+      }
+
+      function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+          throw new TypeError("Cannot call a class as a function");
+        }
+      }
+
+      var Constants = function Constants() {
+        _classCallCheck(this, Constants);
+      };
+
+      Constants.NAME = 'keep-alive-store';
+      Constants.NAMESPACE = Constants.NAME + ':';
+      Constants.WELLKNOWN_EVENTS = {
+        in: {
+          fetchHeadResult: Constants.NAMESPACE + 'fetch-head-result',
+          enable: Constants.NAMESPACE + 'enable',
+          disable: Constants.NAMESPACE + 'disable'
+        },
+        out: {}
+      };
+      _deepFreeze2.default.freeze(Constants);
+
+      var KeepAliveStore = function () {
+        _createClass(KeepAliveStore, null, [{
+          key: 'constants',
+          get: function get() {
+            return Constants;
+          }
+        }]);
+
+        function KeepAliveStore() {
+          _classCallCheck(this, KeepAliveStore);
+
+          var self = this;
+
+          riot.observable(this);
+          self._bound = false;
+          self.bindEvents();
+          self._keepAlive = false;
+        }
+
+        KeepAliveStore.prototype.bindEvents = function bindEvents() {
+          if (this._bound === false) {
+            this.on(Constants.WELLKNOWN_EVENTS.in.fetchHeadResult, this._onFetchHeadResult);
+            this.on(Constants.WELLKNOWN_EVENTS.in.enable, this._onEnable);
+            this.on(Constants.WELLKNOWN_EVENTS.in.disable, this._onDisable);
+            this._bound = !this._bound;
+          }
+        };
+
+        KeepAliveStore.prototype.unbindEvents = function unbindEvents() {
+          if (this._bound === true) {
+            this.off(Constants.WELLKNOWN_EVENTS.in.fetchConfigHeadResult, this._onFetchHeadResult);
+            this.off(Constants.WELLKNOWN_EVENTS.in.enable, this._onEnable);
+            this.off(Constants.WELLKNOWN_EVENTS.in.disable, this._onDisable);
+            this._bound = !this._bound;
+          }
+        };
+
+        KeepAliveStore.prototype._onEnable = function _onEnable() {
+          var _this = this,
+              _arguments = arguments;
+
+          var self = this;
+          var w = riot.global.window;
+
+          w._oldOpen = XMLHttpRequest.prototype.open;
+          var onStateChange = function onStateChange(event) {
+            if (event.currentTarget.readyState === 4) {
+              self._onHttpMonitor(event.currentTarget.responseURL, event.currentTarget.status);
+            }
+          };
+
+          XMLHttpRequest.prototype.open = function () {
+            // when an XHR object is opened, add a listener for its readystatechange events
+            _this.addEventListener('readystatechange', onStateChange);
+            // run the real `open`
+            w._oldOpen.apply(_this, _arguments);
+          };
+
+          if (!w.fetch.polyfill) {
+            w._oldFetch = w.fetch;
+
+            w.fetch = function (input, init) {
+              return w._oldFetch(input, init).then(function (response) {
+                self._onHttpMonitor(response.url, response.status);
+                return response;
+              });
+            };
+          }
+
+          self.timer = setInterval(function () {
+            self._onTimer();
+          }, 5000);
+        };
+
+        KeepAliveStore.prototype._onDisable = function _onDisable() {
+          var self = this;
+          var w = riot.global.window;
+
+          if (self.timer) {
+            clearInterval(this.timer);
+          }
+
+          if (w._oldFetch) {
+            w.fetch = w._oldFetch;
+            w._oldFetch = null;
+          }
+          if (w._oldOpen) {
+            XMLHttpRequest.prototype.open = w._oldOpen;
+            w._oldOpen = null;
+          }
+        };
+
+        KeepAliveStore.prototype._onHttpMonitor = function _onHttpMonitor(url, status) {
+          var n = url.startsWith(window.location.origin);
+
+          if (n === false) {
+            this._keepAlive = true;
+          }
+        };
+
+        KeepAliveStore.prototype._onTimer = function _onTimer() {
+          if (this._keepAlive) {
+            var myAck = {
+              evt: Constants.WELLKNOWN_EVENTS.in.fetchConfigHeadResult
+            };
+
+            riot.control.trigger(riot.EVT.fetchStore.in.fetch, riot.state.keepAlive.url, { method: 'HEAD' }, myAck);
+            this._keepAlive = false;
+          }
+        };
+
+        KeepAliveStore.prototype._onFetchHeadResult = function _onFetchHeadResult(result, ack) {
+          console.log(Constants.NAME, Constants.WELLKNOWN_EVENTS.in.fetchConfigResult2, result, ack);
+        };
+
+        return KeepAliveStore;
+      }();
+
+      exports.default = KeepAliveStore;
+      module.exports = exports['default'];
+
+      /***/
+    },
+    /* 11 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6105,7 +6284,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 10 */
+    /* 12 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6128,15 +6307,15 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       var _deepFreeze2 = _interopRequireDefault(_deepFreeze);
 
-      var _validators = __webpack_require__(14);
+      var _validators = __webpack_require__(15);
 
       var _validators2 = _interopRequireDefault(_validators);
 
-      var _riotcontrolExt = __webpack_require__(6);
+      var _riotcontrolExt = __webpack_require__(7);
 
       var _riotcontrolExt2 = _interopRequireDefault(_riotcontrolExt);
 
-      __webpack_require__(5);
+      __webpack_require__(6);
 
       var _dynamicJscssLoader = __webpack_require__(1);
 
@@ -6371,7 +6550,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 11 */
+    /* 13 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6461,7 +6640,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 12 */
+    /* 14 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6484,7 +6663,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       var _deepFreeze2 = _interopRequireDefault(_deepFreeze);
 
-      var _router = __webpack_require__(5);
+      var _router = __webpack_require__(6);
 
       var _router2 = _interopRequireDefault(_router);
 
@@ -6644,14 +6823,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 13 */
-    /***/function (module, exports) {
-
-      module.exports = __WEBPACK_EXTERNAL_MODULE_13__;
-
-      /***/
-    },
-    /* 14 */
+    /* 15 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6688,7 +6860,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 15 */
+    /* 16 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6728,7 +6900,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 16 */
+    /* 17 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6741,7 +6913,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       var _progressStore2 = _interopRequireDefault(_progressStore);
 
-      var _fetchStore = __webpack_require__(8);
+      var _fetchStore = __webpack_require__(9);
 
       var _fetchStore2 = _interopRequireDefault(_fetchStore);
 
@@ -6749,11 +6921,11 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       var _componentLoaderStore2 = _interopRequireDefault(_componentLoaderStore);
 
-      var _localstorageStore = __webpack_require__(9);
+      var _localstorageStore = __webpack_require__(11);
 
       var _localstorageStore2 = _interopRequireDefault(_localstorageStore);
 
-      var _errorStore = __webpack_require__(7);
+      var _errorStore = __webpack_require__(8);
 
       var _errorStore2 = _interopRequireDefault(_errorStore);
 
@@ -6761,19 +6933,23 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       var _routeStore2 = _interopRequireDefault(_routeStore);
 
-      var _riotcontrolDispatchStore = __webpack_require__(11);
+      var _riotcontrolDispatchStore = __webpack_require__(13);
 
       var _riotcontrolDispatchStore2 = _interopRequireDefault(_riotcontrolDispatchStore);
 
-      var _pluginRegistrationStore = __webpack_require__(10);
+      var _pluginRegistrationStore = __webpack_require__(12);
 
       var _pluginRegistrationStore2 = _interopRequireDefault(_pluginRegistrationStore);
 
-      var _startupStore = __webpack_require__(12);
+      var _startupStore = __webpack_require__(14);
 
       var _startupStore2 = _interopRequireDefault(_startupStore);
 
-      var _router = __webpack_require__(5);
+      var _keepAliveStore = __webpack_require__(10);
+
+      var _keepAliveStore2 = _interopRequireDefault(_keepAliveStore);
+
+      var _router = __webpack_require__(6);
 
       var _router2 = _interopRequireDefault(_router);
 
@@ -6792,6 +6968,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
         riot.EVT = {};
 
+        riot.EVT.keepAliveStore = _keepAliveStore2.default.constants.WELLKNOWN_EVENTS;
         riot.EVT.progressStore = _progressStore2.default.constants.WELLKNOWN_EVENTS;
         riot.EVT.routeStore = _routeStore2.default.constants.WELLKNOWN_EVENTS;
         riot.EVT.componentLoaderStore = _componentLoaderStore2.default.constants.WELLKNOWN_EVENTS;
@@ -6809,7 +6986,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 17 */
+    /* 18 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6868,17 +7045,46 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 18 */
+    /* 19 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
 
-      var riot = __webpack_require__(13);
+      var riot = __webpack_require__(5);
+      riot.tag2('keep-alive', '', '', '', function (opts) {
+        var self = this;
+        if (self.opts.url) {
+          self.url = self.opts.url;
+        }
+
+        self.on('mount', function () {
+          riot.state.keepAlive = {
+            url: self.url
+          };
+        });
+
+        self.on('unmount', function () {
+          riot.state.keepAlive = null;
+        });
+      });
+
+      /***/
+    },
+    /* 20 */
+    /***/function (module, exports, __webpack_require__) {
+
+      "use strict";
+
+      var riot = __webpack_require__(5);
       riot.tag2('startup', '', '', '', function (opts) {
         var self = this;
+
+        riot.global.window = self.opts.window;
+
         if (self.opts.config) {
           self.config = self.opts.config;
         }
+        self.keepAlive = self.opts.keepAlive;
         self.nextTag = 'app';
         if (self.opts.nextTag) {
           self.nextTag = self.opts.nextTag;
@@ -6894,6 +7100,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         self.on('mount', function () {
           self._bind();
           riot.control.trigger(riot.EVT.startupStore.in.fetchConfig, self.config);
+          if (self.keepAlive) {
+            riot.control.trigger('keep-alive-store:enable');
+          }
         });
 
         self.on('unmount', function () {
@@ -6911,21 +7120,21 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 19 */
-    /***/function (module, exports) {
-
-      module.exports = __WEBPACK_EXTERNAL_MODULE_19__;
-
-      /***/
-    },
-    /* 20 */
-    /***/function (module, exports) {
-
-      module.exports = __WEBPACK_EXTERNAL_MODULE_20__;
-
-      /***/
-    },
     /* 21 */
+    /***/function (module, exports) {
+
+      module.exports = __WEBPACK_EXTERNAL_MODULE_21__;
+
+      /***/
+    },
+    /* 22 */
+    /***/function (module, exports) {
+
+      module.exports = __WEBPACK_EXTERNAL_MODULE_22__;
+
+      /***/
+    },
+    /* 23 */
     /***/function (module, exports, __webpack_require__) {
 
       "use strict";
@@ -6944,21 +7153,21 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         };
       }();
 
-      __webpack_require__(13);
+      __webpack_require__(5);
 
-      var _riotRoute = __webpack_require__(19);
+      var _riotRoute = __webpack_require__(21);
 
       var _riotRoute2 = _interopRequireDefault(_riotRoute);
 
-      var _riotcontrol = __webpack_require__(20);
+      var _riotcontrol = __webpack_require__(22);
 
       var _riotcontrol2 = _interopRequireDefault(_riotcontrol);
 
-      var _randomString = __webpack_require__(17);
+      var _randomString = __webpack_require__(18);
 
       var _randomString2 = _interopRequireDefault(_randomString);
 
-      var _riotRouteExtension = __webpack_require__(15);
+      var _riotRouteExtension = __webpack_require__(16);
 
       var _riotRouteExtension2 = _interopRequireDefault(_riotRouteExtension);
 
@@ -6974,19 +7183,19 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       var _componentLoaderStore2 = _interopRequireDefault(_componentLoaderStore);
 
-      var _errorStore = __webpack_require__(7);
+      var _errorStore = __webpack_require__(8);
 
       var _errorStore2 = _interopRequireDefault(_errorStore);
 
-      var _fetchStore = __webpack_require__(8);
+      var _fetchStore = __webpack_require__(9);
 
       var _fetchStore2 = _interopRequireDefault(_fetchStore);
 
-      var _localstorageStore = __webpack_require__(9);
+      var _localstorageStore = __webpack_require__(11);
 
       var _localstorageStore2 = _interopRequireDefault(_localstorageStore);
 
-      var _riotcontrolExt = __webpack_require__(6);
+      var _riotcontrolExt = __webpack_require__(7);
 
       var _riotcontrolExt2 = _interopRequireDefault(_riotcontrolExt);
 
@@ -6994,23 +7203,29 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       var _routeStore2 = _interopRequireDefault(_routeStore);
 
-      var _pluginRegistrationStore = __webpack_require__(10);
+      var _pluginRegistrationStore = __webpack_require__(12);
 
       var _pluginRegistrationStore2 = _interopRequireDefault(_pluginRegistrationStore);
 
-      var _startupStore = __webpack_require__(12);
+      var _startupStore = __webpack_require__(14);
 
       var _startupStore2 = _interopRequireDefault(_startupStore);
 
-      var _riotcontrolDispatchStore = __webpack_require__(11);
+      var _riotcontrolDispatchStore = __webpack_require__(13);
 
       var _riotcontrolDispatchStore2 = _interopRequireDefault(_riotcontrolDispatchStore);
 
-      var _masterEventTable = __webpack_require__(16);
+      var _keepAliveStore = __webpack_require__(10);
+
+      var _keepAliveStore2 = _interopRequireDefault(_keepAliveStore);
+
+      var _masterEventTable = __webpack_require__(17);
 
       var _masterEventTable2 = _interopRequireDefault(_masterEventTable);
 
-      __webpack_require__(18);
+      __webpack_require__(19);
+
+      __webpack_require__(20);
 
       function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { default: obj };
@@ -7021,6 +7236,8 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
           throw new TypeError("Cannot call a class as a function");
         }
       }
+
+      riot.global = {};
 
       var P7HostCore = function () {
         function P7HostCore() {
@@ -7059,6 +7276,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
           this._localStorageStore = new _localstorageStore2.default();
           this._riotControlExt = new _riotcontrolExt2.default();
           this._routeStore = new _routeStore2.default();
+          this._keepAliveStore = new _keepAliveStore2.default();
 
           this._componentLoaderStore = new _componentLoaderStore2.default(this._dynamicJsCssLoader);
           this._pluginRegistrationStore = new _pluginRegistrationStore2.default(this._riotControlExt, this._dynamicJsCssLoader, this._componentLoaderStore);
@@ -7074,6 +7292,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
           riot.control.addStore(this._routeStore);
           riot.control.addStore(this._pluginRegistrationStore);
           riot.control.addStore(this._riotControlDispatchStore);
+          riot.control.addStore(this._keepAliveStore);
           riot.control.addStore(this._startupStore);
 
           return riot;
@@ -7094,10 +7313,10 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
       /***/
     },
-    /* 22 */
+    /* 24 */
     /***/function (module, exports) {
 
-      module.exports = __WEBPACK_EXTERNAL_MODULE_22__;
+      module.exports = __WEBPACK_EXTERNAL_MODULE_24__;
 
       /***/
     }])
@@ -7127,7 +7346,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var riot = __webpack_require__(0);
 
-riot.tag2('app', '<loading-indicator></loading-indicator> <header></header> <div class="container"> <div class="row"> <div class="col-sm-3 col-md-2 sidebar"> <div class="list-group table-of-contents"> <sidebar></sidebar> </div> </div> <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> <div id="riot-app"></div> </div> </div> </div>', '', '', function (opts) {
+riot.tag2('app', '<keep-alive url="config.json"></keep-alive> <loading-indicator></loading-indicator> <header></header> <div class="container-fluid"> <div class="row"> <div class="col-sm-3 col-md-2 sidebar"> <div class="list-group table-of-contents"> <sidebar></sidebar> </div> </div> <div id="mainContent" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"> <div id="riot-app"></div> </div> </div> </div>', '', '', function (opts) {
   var self = this;
   self.name = 'app';
   self.on('before-mount', function () {
@@ -7265,7 +7484,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import 'bootswatch/slate/bootstrap.css';
 // import 'bootstrap';
 var p7HostCore = new _P7HostCore2.default(riot);
-
+//import FetchWrapper from './fetch-wrapper.js';
+//let fetchWrapper = new FetchWrapper();
 /*
 import P7HostCore from './p7-host-core/index.js';
 */
@@ -7725,7 +7945,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "/*\r\n * Base structure\r\n */\r\n\r\n/* Move down content because we have a fixed navbar that is 50px tall */\r\nbody {\r\n  padding-top: 70px;\r\n}\r\n a:hover {\r\n  cursor:pointer;\r\n }\r\n\r\n .spacer { margin:0; padding:0; height:15px; }\r\n \r\n\r\n/*\r\n * Sidebar\r\n */\r\n\r\n/* Hide for mobile, show later */\r\n.sidebar {\r\n  display: none;\r\n}\r\n@media (min-width: 768px) {\r\n  .sidebar {\r\n    position: fixed;\r\n    top: 51px;\r\n    bottom: 0;\r\n    left: 0;\r\n    z-index: 1000;\r\n    display: block;\r\n    padding: 20px;\r\n    overflow-x: hidden;\r\n    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */\r\n    \r\n    border-right: 1px solid #eee;\r\n  }\r\n}\r\n\r\n \r\n\r\n\r\n/*\r\n * Main content\r\n */\r\n\r\n.main {\r\n  padding: 20px;\r\n}\r\n@media (min-width: 768px) {\r\n  .main {\r\n    padding-right: 40px;\r\n    padding-left: 40px;\r\n  }\r\n}\r\n.main .page-header {\r\n  margin-top: 0;\r\n}\r\n\r\n\r\n", ""]);
+exports.push([module.i, "/*\r\n * Base structure\r\n */\r\n\r\n/* Move down content because we have a fixed navbar that is 50px tall */\r\nbody {\r\n  padding-top: 70px;\r\n}\r\n a:hover {\r\n  cursor:pointer;\r\n }\r\n\r\n .spacer { margin:0; padding:0; height:15px; }\r\n \r\n\r\n/*\r\n * Sidebar\r\n */\r\n\r\n/* Hide for mobile, show later */\r\n/*\r\n.sidebar {\r\n  display: none;\r\n}\r\n@media (min-width: 768px) {\r\n  .sidebar {\r\n    position: fixed;\r\n    top: 51px;\r\n    bottom: 0;\r\n    left: 0;\r\n    z-index: 1000;\r\n    display: block;\r\n    padding: 20px;\r\n    overflow-x: hidden;\r\n    overflow-y: auto; \r\n    border-right: 1px solid #eee;\r\n  }\r\n}\r\n*/\r\n  .sidebar {\r\n    position: absolute;\r\n    top: 51px;\r\n    bottom: 0;\r\n    left: 0;\r\n    z-index: 1000;\r\n    display: block;\r\n    padding: 20px;\r\n    overflow-x: hidden;\r\n    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */\r\n    width: 200px;\r\n    height: 100%;\r\n    border-right: 1px solid #eee;\r\n  }\r\n \r\n#mainContent {\r\n  float: left;\r\n     \r\n    margin-left: 200px;\r\n}\r\n\r\n/*\r\n * Main content\r\n */\r\n\r\n.main {\r\n  padding-right: 20px;\r\n    padding-left: 20px;\r\n}\r\n@media (min-width: 768px) {\r\n  .main {\r\n    padding-right: 20px;\r\n    padding-left: 20px;\r\n  }\r\n}\r\n.main .page-header {\r\n  margin-top: 0;\r\n}\r\n\r\n\r\n", ""]);
 
 // exports
 
