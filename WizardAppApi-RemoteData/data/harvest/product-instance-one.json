@@ -1,5 +1,5 @@
 {
-	"wizard-package-url": "https://cdn.jsdelivr.net/gh/ghstahl/WizardAppApi-RemoteData/espa/product-instance-one/main.js",
+	"wizard-package-url": "https://ghstahl.github.io/WizardAppApi-RemoteData/espa/product-instance-one/main.js",
 	"wizard-package-url-dev":"http://localhost:8888/dist/espa/plugins/forest/1.0.0/main.js",
 	"entry-page": "page-forest"
 }
